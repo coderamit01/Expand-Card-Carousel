@@ -11,7 +11,7 @@
   margin: auto;
   overflow: hidden;
   margin-top: 20px;
-  height: 70vh;
+  height: 85vh;
 }
 
 .card {
@@ -20,28 +20,86 @@
   overflow: hidden;
   transition: flex 0.5s ease-in-out;
   cursor: pointer;
-  height: 40vh;
-  background-color: rgb(53, 77, 69);
   height: 100%;
 }
-
+.active {
+  flex: 4 !important;
+}
 .card img {
   width: 100%;
-  height: auto;
-  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 100%;
+  object-fit: cover;
   transition: transform 0.5s ease;
 }
-
-.card p {
+.card-blur:not(.active .card-blur) {
   position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: white;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 5px 10px;
-  border-radius: 5px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,.5);
+  backdrop-filter: blur(20px);
 }
-.active {
-  flex: 3 !important;
+.card-plus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  padding: 10px;
+  border-radius: 50px;
+  background-color: rgb(215 215 215 / 15%);
+  border: 1px solid rgba(215, 215, 215, 0.507);
+  color: #fff;
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  z-index: 22;
+  transition: all 0.4s ease;
+}
+.card:hover .card-plus {
+  background-color: #fff;
+  border: 1px solid #fff;
+  color: #0c0c0c;
+}
+.card.active .card-plus {
+  display: none;
+}
+
+.card-arrows {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  z-index: 22;
+}
+.card.active .card-arrows {
+  display: flex;
+}
+.card-arrows .next,
+.card-arrows .prev {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  padding: 10px;
+  border-radius: 50px;
+  background-color: rgb(215 215 215 / 15%);
+  border: 1px solid rgba(215, 215, 215, 0.507);
+  color: #fff;
+  transition: all 0.4s ease-in-out;
+}
+.card-arrows .next:hover,
+.card-arrows .prev:hover {
+  background-color: #fff;
+  border: 1px solid #fff;
+  color: #0c0c0c;
 }
