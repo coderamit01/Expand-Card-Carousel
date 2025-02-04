@@ -33,7 +33,7 @@
 .active {
   flex: 4 !important;
 }
-.card img {
+.card .card-thumbnail {
   width: 100%;
   position: absolute;
   left: 0;
@@ -51,6 +51,7 @@
   bottom: 0;
   background-color: rgba(0,0,0,.5);
   backdrop-filter: blur(20px);
+  z-index: 33;
 }
 .card-plus {
   display: flex;
@@ -67,7 +68,7 @@
   left: 50%;
   bottom: 15px;
   transform: translateX(-50%);
-  z-index: 22;
+  z-index: 35;
   transition: all 0.4s ease;
 }
 .card:hover .card-plus {
@@ -111,6 +112,36 @@
   border: 1px solid #fff;
   color: #0c0c0c;
 }
+.card-info {
+  position: absolute;
+  height: 100%;
+  z-index: 11;
+  transition: all .4s ease-in-out;
+}
+.card.active .card-info {
+  padding: 25px;
+}
+.card-info .content-images {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.card-info  .content-images img {
+  width: 55px;
+  height: 33px;
+  object-fit: contain;
+}
+.progress-container {
+  width: 50%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.2);
+}
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background: #ffffff;
+}
+
 
 
 @media screen and (max-width: 1024px) {
