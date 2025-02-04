@@ -4,7 +4,7 @@ const expandCard = () => {
   let currentIndex = -1;
   let interval;
   let progressInterval;
-  let transitionTime = 8000;
+  let transitionTime = 500000;
 
   // Activate Item 
   const activateItem = (index) => {

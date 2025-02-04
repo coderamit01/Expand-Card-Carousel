@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Bakbak+One&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 * {
   box-sizing: border-box;
   margin: 0;
@@ -66,7 +67,7 @@
   color: #fff;
   position: absolute;
   left: 50%;
-  bottom: 15px;
+  bottom: 25px;
   transform: translateX(-50%);
   z-index: 35;
   transition: all 0.4s ease;
@@ -85,8 +86,8 @@
   align-items: center;
   gap: 10px;
   position: absolute;
-  right: 20px;
-  bottom: 15px;
+  right: 32px;
+  bottom: 25px;
   z-index: 22;
 }
 .card.active .card-arrows {
@@ -113,26 +114,63 @@
   color: #0c0c0c;
 }
 .card-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
   position: absolute;
   height: 100%;
   z-index: 11;
-  transition: all .4s ease-in-out;
-}
-.card.active .card-info {
+  transition: all .8s ease-in-out;
   padding: 25px;
 }
+.card-info h2 {
+  font-family: "Bakbak One", serif;
+  font-size: 50px;
+  font-weight: 400;
+  line-height: 52px;
+  text-transform: capitalize;
+  color: #fff;
+}
+.card-info h2:nth-child(2) {
+  color: #EB1F4F;
+}
+.card-info p {
+  color: #E2E3F4;
+  font-family: "Roboto Mono", serif;
+  font-weight: 400;
+  font-size: 18px;
+  width: 40%;
+  padding: 15px 0 40px 0;
+}
+.card-info .webase-btn {
+  color: #fff;
+  font-family: "Rubik", serif;
+  width: fit-content;
+  display: inline;
+  background-color: #EB1F4F;
+  padding: 12px 30px;
+  border-radius: 10px;
+  border: 0;
+  outline: 0;
+  margin-bottom: 30px;
+}
+
 .card-info .content-images {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 25px;
+  position: absolute;
+  bottom: 40px;
+  left: 25px;
 }
 .card-info  .content-images img {
-  width: 55px;
-  height: 33px;
+  width: 65px;
+  height: 65px;
   object-fit: contain;
 }
 .progress-container {
-  width: 50%;
+  width: 30%;
   height: 2px;
   background: rgba(255, 255, 255, 0.2);
 }
