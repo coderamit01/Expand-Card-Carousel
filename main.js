@@ -1,85 +1,135 @@
-
 const expandCard = () => {
   const slides = document.querySelectorAll(".card");
-  let currentIndex = -1;
+  const nextBtn = document.querySelector(".global-next");
+  const prevBtn = document.querySelector(".global-prev");
+  let currentIndex = 0;
   let interval;
-  let progressInterval;
-  let transitionTime = 500000;
+  let transitionTime = 5000;
+  let startX = 0;
+  let isDragging = false;
 
-  // Activate Item 
+  const resetProgressBar = (progressbar) => {
+    progressbar.style.transition = "none";
+    progressbar.style.width = "0%";
+    setTimeout(() => {
+      progressbar.style.transition = `width ${transitionTime}ms linear`;
+      progressbar.style.width = "100%";
+    }, 10);
+  };
+
   const activateItem = (index) => {
     slides.forEach((slide) => {
       slide.classList.remove("active");
-      slide.querySelector(".progress-bar").style.width = "0%";
+      resetProgressBar(slide.querySelector(".progress-bar"));
     });
     slides[index].classList.add("active");
-    startProgressBar(slides[index]);
+    updateButtons();
   };
 
-  // Progress Bar Animation
-  const startProgressBar = (card) => {
-    const progressBar = card.querySelector(".progress-bar");
-    progressBar.style.transition = `width ${transitionTime}ms linear`;
-    progressBar.style.width = "100%";
-  }
-
-  // Auto switch slider 
   const startAutoSwitch = () => {
-
-    if(currentIndex === -1) {
-      currentIndex = 0;
-      activateItem(currentIndex);
-    }
-    // clearInterval(interval);
+    clearInterval(interval);
     interval = setInterval(() => {
-      if(currentIndex >= 0) {
-        slides[currentIndex].classList.remove("active");
-      }
-      currentIndex = (currentIndex + 1) % slides.length;
-      activateItem(currentIndex)
-    },transitionTime);
+      currentIndex = (currentIndex + 1) % slides.length; // Looping continues
+      activateItem(currentIndex);
+    }, transitionTime);
   };
 
-  // onclick events 
-  slides.forEach((card,idx) => {
-    const blurItem = card.querySelector('.card-blur');
-    const plushBtn = card.querySelector('.card-plus');
-    const nextBtn = card.querySelector('.next');
-    const prevBtn = card.querySelector('.prev');
+  const updateButtons = () => {
+    if (window.innerWidth > 767) return; // Hide global buttons on desktop
+    prevBtn.style.display = currentIndex === 0 ? prevBtn.classList.add("arrow-disable") : prevBtn.classList.remove("arrow-disable");
+    nextBtn.style.display = currentIndex === slides.length - 1 ? nextBtn.classList.add("arrow-disable") : nextBtn.classList.remove("arrow-disable");
+  };
 
-    [blurItem,plushBtn].forEach((element) => {
-      element.addEventListener("click", () => {
+  nextBtn.addEventListener("click", () => {
+    if (currentIndex < slides.length - 1) {
+      currentIndex++;
+      activateItem(currentIndex);
+      startAutoSwitch();
+    }
+  });
+
+  prevBtn.addEventListener("click", () => {
+    if (currentIndex > 0) {
+      currentIndex--;
+      activateItem(currentIndex);
+      startAutoSwitch();
+    }
+  });
+
+  slides.forEach((card, idx) => {
+    if (window.innerWidth > 767) {
+      const blurItem = card.querySelector(".card-blur");
+      const plushBtn = card.querySelector(".card-plus");
+      const next = card.querySelector(".next");
+      const prev = card.querySelector(".prev");
+
+      [blurItem, plushBtn].forEach((element) => {
+        element.addEventListener("click", () => {
+          clearInterval(interval);
+          if (card.classList.contains("active")) {
+            card.classList.remove("active");
+            currentIndex = -1;
+            startAutoSwitch();
+          } else {
+            slides.forEach((slide) => slide.classList.remove("active"));
+            card.classList.add("active");
+            currentIndex = idx;
+            startAutoSwitch();
+            resetProgressBar(card.querySelector(".progress-bar"));
+          }
+        });
+      });
+
+      next.addEventListener("click", (e) => {
+        e.stopPropagation();
         clearInterval(interval);
-      if(card.classList.contains("active")) {
-        card.classList.remove("active");
-        currentIndex = -1;
+        currentIndex = (idx + 1) % slides.length;
+        activateItem(currentIndex);
         startAutoSwitch();
-      }else {
-        slides.forEach((slide) => slide.classList.remove("active"));
-        card.classList.add("active");
-        currentIndex = idx;
+      });
+      prev.addEventListener("click", (e) => {
+        e.stopPropagation();
+        clearInterval(interval);
+        currentIndex = (idx - 1 + slides.length) % slides.length;
+        activateItem(currentIndex);
         startAutoSwitch();
-        startProgressBar(card);
+      });
+    }
+  });
+
+  // ✅ Mobile Dragging Behavior
+  slides.forEach((slide) => {
+    slide.addEventListener("touchstart", (e) => {
+      startX = e.touches[0].clientX;
+      isDragging = true;
+    });
+
+    slide.addEventListener("touchmove", (e) => {
+      if (!isDragging) return;
+      let endX = e.touches[0].clientX;
+      let diff = startX - endX;
+
+      if (diff > 50 && currentIndex < slides.length - 1) {
+        // Drag left → go next
+        currentIndex++;
+        activateItem(currentIndex);
+        startAutoSwitch();
+      } else if (diff < -50 && currentIndex > 0) {
+        // Drag right → go previous
+        currentIndex--;
+        activateItem(currentIndex);
+        startAutoSwitch();
       }
+      isDragging = false;
     });
-    });
-    
-    nextBtn.addEventListener("click", (e) => {
-      // e.stopPropagation();
-      clearInterval(interval);
-      currentIndex = (idx + 1) % slides.length;
-      activateItem(currentIndex);
-      startAutoSwitch();
-    });
-    prevBtn.addEventListener("click", (e) => {
-      // e.stopPropagation();
-      clearInterval(interval);
-      currentIndex = (idx - 1 + slides.length) % slides.length;
-      activateItem(currentIndex);
-      startAutoSwitch();
+
+    slide.addEventListener("touchend", () => {
+      isDragging = false;
     });
   });
 
+  activateItem(currentIndex);
   startAutoSwitch();
-}
+};
+
 expandCard();
