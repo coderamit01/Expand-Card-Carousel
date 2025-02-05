@@ -4,7 +4,7 @@ const expandCard = () => {
   const prevBtn = document.querySelector(".global-prev");
   let currentIndex = 0;
   let interval;
-  let transitionTime = 5000;
+  let transitionTime = 3600000;
   let startX = 0;
   let isDragging = false;
 
@@ -97,36 +97,40 @@ const expandCard = () => {
     }
   });
 
-  // ✅ Mobile Dragging Behavior
-  slides.forEach((slide) => {
-    slide.addEventListener("touchstart", (e) => {
-      startX = e.touches[0].clientX;
-      isDragging = true;
-    });
-
-    slide.addEventListener("touchmove", (e) => {
-      if (!isDragging) return;
-      let endX = e.touches[0].clientX;
-      let diff = startX - endX;
-
-      if (diff > 50 && currentIndex < slides.length - 1) {
-        // Drag left → go next
-        currentIndex++;
-        activateItem(currentIndex);
-        startAutoSwitch();
-      } else if (diff < -50 && currentIndex > 0) {
-        // Drag right → go previous
-        currentIndex--;
-        activateItem(currentIndex);
-        startAutoSwitch();
-      }
-      isDragging = false;
-    });
-
-    slide.addEventListener("touchend", () => {
-      isDragging = false;
-    });
+// ✅ Mobile Dragging Behavior (Improved)
+slides.forEach((slide) => {
+  slide.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+    isDragging = true;
   });
+
+  slide.addEventListener("touchmove", (e) => {
+    if (!isDragging) return;
+    e.preventDefault(); // Prevent accidental clicks while swiping
+
+    let endX = e.touches[0].clientX;
+    let diff = startX - endX;
+
+    if (diff > 30 && currentIndex < slides.length - 1) {
+      // Swipe left → go next
+      currentIndex++;
+      activateItem(currentIndex);
+      startAutoSwitch();
+      isDragging = false; // Disable dragging until the next start
+    } else if (diff < -30 && currentIndex > 0) {
+      // Swipe right → go previous
+      currentIndex--;
+      activateItem(currentIndex);
+      startAutoSwitch();
+      isDragging = false; // Disable dragging until the next start
+    }
+  });
+
+  slide.addEventListener("touchend", () => {
+    isDragging = false;
+  });
+});
+
 
   activateItem(currentIndex);
   startAutoSwitch();

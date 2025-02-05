@@ -10,7 +10,7 @@
   margin: 0 auto;
 }
 
-.cards {
+.webase-cards {
   display: flex;
   gap: 10px;
   margin: auto;
@@ -23,7 +23,6 @@
   flex-basis: 100px;
   position: relative;
   overflow: hidden;
-  cursor: pointer;
   height: 100%;
   border-radius: 5px;
   transition: flex .5s cubic-bezier(.4, .2, .4, 1);
@@ -61,7 +60,7 @@
   color: #fff;
   position: absolute;
   right: 50px;
-  top: 25px;
+  top: 32px;
   font-family: "Roboto Mono", serif;
   font-size: 14px;
   transform: rotate(-90deg);
@@ -79,9 +78,19 @@
   transform: rotate(0) translateX(0);
   right: 32px;
 }
-.card-name i {
-  font-size: 12px;
-  margin-bottom: -4px;
+.card-name span {
+  position: relative;
+}
+.card-name span::after {
+  content: '';
+  position: absolute;
+  height: 10px;
+  width: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.772);
+  border-radius: 50%;
+  z-index: 38;
+  top: 3px;
+  margin-left: 6px;
 }
 .card-plus {
   display: flex;
@@ -91,6 +100,7 @@
   width: 40px;
   padding: 10px;
   border-radius: 50px;
+  cursor: pointer;
   background-color: rgb(215 215 215 / 15%);
   border: 1px solid rgba(215, 215, 215, 0.507);
   color: #fff;
@@ -131,6 +141,7 @@
   width: 40px;
   padding: 10px;
   border-radius: 50px;
+  cursor: pointer;
   background-color: rgb(215 215 215 / 15%);
   border: 1px solid rgba(215, 215, 215, 0.507);
   color: #fff;
@@ -181,12 +192,13 @@
   background-color: #EB1F4F;
   padding: 15px 30px;
   border-radius: 10px;
+  cursor: pointer;
   border: 0;
   outline: 0;
   margin-bottom: 30px;
 }
 
-.card-info .content-images {
+.content-images {
   display: flex;
   align-items: center;
   gap: 25px;
@@ -194,7 +206,7 @@
   bottom: 40px;
   left: 25px;
 }
-.card-info  .content-images img {
+.content-images img {
   width: 65px;
   height: 65px;
   object-fit: contain;
@@ -210,7 +222,7 @@
   background: #ffffff;
 }
 .global-arrow  {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 10px;
 }
@@ -221,7 +233,9 @@
   height: 40px;
   width: 40px;
   padding: 10px;
+  font-size: 16px;
   border-radius: 50px;
+  cursor: pointer;
   background-color: rgb(215 215 215 / 15%);
   border: 1px solid rgba(215, 215, 215, 0.507);
   color: #fff;
@@ -268,7 +282,7 @@
   }
 }
 @media (max-width: 767px) {
-  .cards {
+  .webase-cards {
     position: relative;
     height: 65vh;
   }
@@ -285,18 +299,26 @@
     padding-top: 45px;
   }
   .card-name {
-    flex-direction: row-reverse;
     position: relative;
     left: 25px;
     top: 25px;
     transform: none;
-    transition-timing-function: 0;
+    transition-timing-function: initial;
   }
   .card.active .card-name {
     transform: none;
     position: relative;
     left: 25px;
     top: 25px;
+  }
+  .card-name span::after {
+    z-index: 38;
+    left: -20px;
+    top: 3px;
+    margin-left: 0;
+  }
+  .card-name span {
+    margin-left: 22px;
   }
   .card.active {
     transform: translateX(0%);
@@ -318,11 +340,11 @@
   .card-info p {
     padding-bottom: 20px;
   }
-  .card-info .content-images {
-    position: initial;
+.content-images {
     left: 25px;
+    bottom: 85px;
   }
-  .cards-wrapper {
+  .webase-cards-wrapper {
     position: relative;
   }
   .card.active .card-arrows {
