@@ -1,10 +1,10 @@
 const expandCard = () => {
-  const slides = document.querySelectorAll(".card");
+  const slides = document.querySelectorAll(".webase-card");
   const nextBtn = document.querySelector(".global-next");
   const prevBtn = document.querySelector(".global-prev");
   let currentIndex = 0;
   let interval;
-  let transitionTime = 3600000;
+  let transitionTime = 1000000;
   let startX = 0;
   let isDragging = false;
 
@@ -58,8 +58,8 @@ const expandCard = () => {
 
   slides.forEach((card, idx) => {
     if (window.innerWidth > 767) {
-      const blurItem = card.querySelector(".card-blur");
-      const plushBtn = card.querySelector(".card-plus");
+      const blurItem = card.querySelector(".webase-card-blur");
+      const plushBtn = card.querySelector(".webase-card-plus");
       const next = card.querySelector(".next");
       const prev = card.querySelector(".prev");
 
