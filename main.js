@@ -1,10 +1,11 @@
-const expandCard = () => {
+document.addEventListener('DOMContentLoaded', function() {
+	const expandCard = () => {
   const slides = document.querySelectorAll(".webase-card");
   const nextBtn = document.querySelector(".global-next");
   const prevBtn = document.querySelector(".global-prev");
   let currentIndex = 0;
   let interval;
-  let transitionTime = 1000000;
+  let transitionTime = 15000;
   let startX = 0;
   let isDragging = false;
 
@@ -101,28 +102,35 @@ const expandCard = () => {
 slides.forEach((slide) => {
   slide.addEventListener("touchstart", (e) => {
     startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY; // Track vertical start position
     isDragging = true;
   });
 
   slide.addEventListener("touchmove", (e) => {
     if (!isDragging) return;
-    e.preventDefault(); // Prevent accidental clicks while swiping
 
     let endX = e.touches[0].clientX;
-    let diff = startX - endX;
+    let endY = e.touches[0].clientY; // Track vertical end position
+    let diffX = startX - endX;
+    let diffY = startY - endY; // Vertical movement
 
-    if (diff > 30 && currentIndex < slides.length - 1) {
-      // Swipe left → go next
-      currentIndex++;
-      activateItem(currentIndex);
-      startAutoSwitch();
-      isDragging = false; // Disable dragging until the next start
-    } else if (diff < -30 && currentIndex > 0) {
-      // Swipe right → go previous
-      currentIndex--;
-      activateItem(currentIndex);
-      startAutoSwitch();
-      isDragging = false; // Disable dragging until the next start
+    // Check if horizontal movement is greater than vertical
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+      e.preventDefault(); // Prevent scrolling only if horizontal swipe detected
+
+      if (diffX > 30 && currentIndex < slides.length - 1) {
+        // Swipe left → go next
+        currentIndex++;
+        activateItem(currentIndex);
+        startAutoSwitch();
+        isDragging = false;
+      } else if (diffX < -30 && currentIndex > 0) {
+        // Swipe right → go previous
+        currentIndex--;
+        activateItem(currentIndex);
+        startAutoSwitch();
+        isDragging = false;
+      }
     }
   });
 
@@ -132,8 +140,11 @@ slides.forEach((slide) => {
 });
 
 
+
   activateItem(currentIndex);
   startAutoSwitch();
 };
 
 expandCard();
+
+});
